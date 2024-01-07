@@ -35,7 +35,7 @@ jobs:
           cache: "pip"
 
       # Optional: Install your preferred Python packages
-      - run: "pip install -r demos/requirements.txt"
+      - run: "pip install -r requirements.txt"
 
       # Run the action
       - uses: Yeicor/ocp-action@v3.1.0
