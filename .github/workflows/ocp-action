@@ -1,0 +1,46 @@
+on:
+  push:
+    branches:
+      - "main"
+  workflow_dispatch: { }
+
+jobs:
+  build-models:
+    name: "Build demo models"
+    runs-on: "ubuntu-latest"
+
+    # Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+    permissions:
+      contents: "read"      # to read the repository contents
+      pull-requests: "read" # to read pull requests
+      pages: "write"        # to deploy to Pages
+      id-token: "write"     # to verify the deployment originates from an appropriate source
+
+    # Deploy to the github-pages environment
+    environment:
+      name: "github-pages"
+      # url: "${{ steps.deployment.outputs.page_url }}"
+
+    # WARNING: You also need to go to Settings > Pages and set the source to "GitHub Actions"
+
+    steps:
+
+      # Checkout your repository
+      - uses: "actions/checkout@v4"
+
+      # Optional: Install your preferred Python version and set up caches
+      - uses: "actions/setup-python@v5"
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      # Optional: Install your preferred Python packages
+      - run: "pip install -r demos/requirements.txt"
+
+      # Run the action
+      - uses: Yeicor/ocp-action@v3.1.0
+        with:
+          scripts: "examples/TTT/ttt-t-05-19b_WEDGE_b123d.py"
+          # formats: "STL|STEP|AMF|SVG|TJS|DXF|VRML|VTP|3MF|GLTF"
+          # website: "."
+          # website-screenshot: "true"
