@@ -40,7 +40,7 @@ jobs:
       # Run the action
       - uses: Yeicor/ocp-action@v3.1.0
         with:
-          scripts: "examples/TTT/ttt-t-05-19b_WEDGE_b123d.py"
-          # formats: "STL|STEP|AMF|SVG|TJS|DXF|VRML|VTP|3MF|GLTF"
-          # website: "."
-          # website-screenshot: "true"
+          scripts: "examples/TTT/ttt-t-05-19b_WEDGE_b123d.py|examples/TTT/ttt-t2-20-y3_FLANGE_b123d.py"
+          formats: "STL|STEP|GLTF"
+          website: "."
+          website-screenshot: "true"
