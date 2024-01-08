@@ -9,7 +9,7 @@ densc = 1020/1e6 #ABS
 ms = Mode.SUBTRACT
 LMH, LMV = LengthMode.HORIZONTAL, LengthMode.VERTICAL
 # %%
-
+#designed in inches, scaled at the end
 with BuildPart() as p:
     with BuildSketch(Plane.XZ.offset(2/2)) as s:
         with Locations((-2.5,1.5)):
@@ -51,6 +51,6 @@ with BuildPart() as p:
 print(f"\npart mass = {p.part.scale(IN).volume*densc/LB}") #correct answer is 0.265 lbs +/- 0.002 lbs
 
 if 'show_object' in globals():
-    show_object(p.part, "WEDGE")
+    show_object(p.part.scale(IN), "WEDGE")
 else:
-    assert p.part.export_stl("WEDGE.stl"), "Failed to export STL"
+    assert p.part.scale(IN).export_stl("WEDGE.stl"), "Failed to export STL"
