@@ -1,6 +1,6 @@
 import sys
 sys.path.append('..')
-from __ocp_action_api import show_object
+from TTT.__ocp_action_api_OVERRIDE import show_object
 from build123d import *
 
 #same as https://github.com/Irev-Dev/curated-code-cad/blob/main/birdhouse/build123d.py
