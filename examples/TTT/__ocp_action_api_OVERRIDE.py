@@ -42,8 +42,10 @@ def show_object(obj: Union[TopoDS_Shape, WrappedShape, WrappedPartShape, cq.Work
     os.makedirs(out_dir, exist_ok=True)
 
     # Convert Z-up to Y-up (more common?)
-    obj = obj.rotateAboutCenter((1, 0, 0), -90) # adopted in override
-
+    # obj = obj.rotateAboutCenter((1, 0, 0), -90) # CQ version
+    # obj = obj.rotate(axis=Axis.X, angle=-90) # build123d adopted in override
+    obj = obj.rotate((0,0,0),(1,0,0),-90) # CQ Shape rotate method
+                    
     # For each wanted format
     for fmt in wanted_formats:
 
