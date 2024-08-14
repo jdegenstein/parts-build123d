@@ -40,7 +40,7 @@ jobs:
       # Run the action
       - uses: Yeicor/ocp-action@v3.1.3
         with:
-          scripts: "examples/birdhouse.py|examples/OCC_bottle.py|examples/TTT/ttt-t-05-19b_WEDGE_b123d.py|examples/TTT/ttt-t2-20-y3_FLANGE_b123d.py"
+          scripts: "examples/birdhouse.py|examples/OCC_bottle.py|examples/TTT/ttt-t-05-19b_WEDGE_b123d.py|examples/TTT/ttt-t2-20-y3_FLANGE_b123d.py|examples/diamond_bull.py"
           formats: "STL|STEP|GLTF"
           tolerance: "0.001"
           angular_tolerance: "0.1"
