@@ -1,3 +1,6 @@
+# diamond_bull.py
+# for entry into the NeedItMakeIt duct design competition
+
 from build123d import *
 # from ocp_vscode import *
 from inspect import currentframe as cf
@@ -64,21 +67,22 @@ support_spline = Spline(support_pts)
 
 with BuildPart() as p:
     loc_start = Location((icbf_center), (90, 0, 0))
-    with BuildSketch(loc_start) as s0:
+    with BuildSketch(loc_start) as s0: # starting sketch circle for inlet
         Circle(8)
+    # create a location for the end of duct and apply some rotation to angle towards nozzle
     loc_end = Location(rhs_spline @ 1, (46, 27, 0), Intrinsic.YXZ)
     with BuildSketch(loc_end) as s:
-        with BuildLine() as l:
+        with BuildLine() as l: # create diamond sketch by drawing one straight line and mirroring twice
             Line((23, 0), (0, 3))
             mirror(about=Plane.XZ)
             mirror(about=Plane.YZ)
-            fillet(l.vertices(), 1)
+            fillet(l.vertices(), 1) # add fillets to round corners
         make_face()
-    sweep(multisection=True, path=rhs_spline)
-    split(bisect_by=Plane.YZ)
+    sweep(multisection=True, path=rhs_spline) # perform multisection sweep from s0 to s
+    split(bisect_by=Plane.YZ) # bisect and mirror avoids problems with OCCT
     mirror(about=Plane.YZ)
 
-    with BuildPart() as p_support:
+    with BuildPart() as p_support: # create mounts that go from support to ducts
         with BuildSketch(support_spline ^ 1) as s4:
             Circle(3)
         sweep(
@@ -90,7 +94,7 @@ with BuildPart() as p:
 
         mirror(about=Plane.YZ)
 
-    with BuildPart(mode=Mode.SUBTRACT) as p_hollow:
+    with BuildPart(mode=Mode.SUBTRACT) as p_hollow: # create internal duct for boolean subtraction
         with BuildSketch(loc_start) as s2:
             Circle(6.5)
         with BuildSketch(loc_end) as s3:
@@ -101,9 +105,9 @@ with BuildPart() as p:
         split(bisect_by=Plane.YZ)
         mirror(zz, about=Plane.YZ)
 
-    add(step.children[0])  # LH
-    add(step.children[1])  # RH
-    add(step.children[2])  # REAR
+    add(step.children[0])  # LHMOUNT from step file
+    add(step.children[1])  # RHMOUNT   ''
+    add(step.children[2])  # REARMOUNT ''
 
     mounthole = (
         step.children[1]
@@ -116,17 +120,17 @@ with BuildPart() as p:
     mounthole_face = Face(Wire(mounthole))
     with BuildSketch(mounthole_face) as s_rear_clr:
         Circle(2.6)
-    extrude(amount=-10, mode=Mode.SUBTRACT)
+    extrude(amount=-10, mode=Mode.SUBTRACT) # provide clearance for bolt head on rearmount
 
 # stats:
-print(p.part.bounding_box())
+print(p.part.bounding_box()) # check that duct has enough clearance versus nozzle
 print(step.bounding_box())
 print(f"\npart mass = {p.part.volume*densc}")
 
-print(f"{s2.sketch.area=}")
+print(f"{s2.sketch.area=}") # compare inlet area vs area of both outlets
 print(f"{2*s3.sketch.area=}")
 
-#
+# OCP VSCODE SHOW COMMANDS, not needed for parts-build123d repo
 # classes = (BuildPart, BuildSketch, BuildLine)  # for OCP-vscode
 # set_colormap(ColorMap.seeded(colormap="rgb", alpha=1, seed_value="7"))
 # variables, s_o, s_n, slocal = (list(cf().f_locals.items()), [], [], False)
